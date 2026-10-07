@@ -73,8 +73,8 @@ Bivalk/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/bhivourdevnath-stack/Bivalk.git
-cd Bivalk
+git clone https://github.com/bhivourdevnath-stack/Bialk.git
+cd Bialk
 ```
 
 2. Create and activate a virtual environment:
