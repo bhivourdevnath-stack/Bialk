@@ -1,6 +1,6 @@
 Btw, it's a partial commit ....................
 
-# Bivalk
+# Bialk
 
 Bivalk is a Flask-based social microblogging platform inspired by lightweight community networks. It includes user authentication, profile management, post creation, follower/following relationships, private messaging, notifications, search, translation, and background task support.
 
