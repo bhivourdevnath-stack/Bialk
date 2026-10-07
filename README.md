@@ -35,7 +35,7 @@ Bialk is a Flask-based social microblogging platform inspired by lightweight com
 ## Project Structure
 
 ```text
-Bivalk/
+Bialk/
 ├── app/
 │   ├── api/
 │   ├── auth/
