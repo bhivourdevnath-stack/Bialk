@@ -1,0 +1,131 @@
+# German translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-04 16:27+0600\n"
+"PO-Revision-Date: 2026-09-23 15:50+0600\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/__init__.py:23
+msgid "Please log in to access this page."
+msgstr ""
+
+#: app/translate.py:12
+msgid "Error: the translation service URL is not configured."
+msgstr ""
+
+#: app/translate.py:33
+msgid "Error: the translation service failed."
+msgstr ""
+
+#: app/main/forms.py:38
+msgid "Search"
+msgstr ""
+
+#: app/main/forms.py:47
+msgid "Message"
+msgstr ""
+
+#: app/main/forms.py:48
+msgid "Submit"
+msgstr ""
+
+#: app/main/routes.py:101
+msgid "Your message has been sent."
+msgstr ""
+
+#: app/main/routes.py:103
+msgid "Send Message"
+msgstr ""
+
+#: app/main/routes.py:142
+msgid "An export task is currently in progress"
+msgstr ""
+
+#: app/main/routes.py:144
+msgid "Exporting posts..."
+msgstr ""
+
+#: app/templates/_post.html:21
+msgid "Translate"
+msgstr ""
+
+#: app/templates/base.html:47 app/templates/messages.html:3
+msgid "Messages"
+msgstr ""
+
+#: app/templates/base.html:95
+msgid "Translating..."
+msgstr ""
+
+#: app/templates/base.html:104 app/templates/base.html:110
+msgid "Translation failed."
+msgstr ""
+
+#: app/templates/messages.html:11
+msgid "Newer messages"
+msgstr ""
+
+#: app/templates/messages.html:16
+msgid "Older messages"
+msgstr ""
+
+#: app/templates/search.html:3
+msgid "Search Results"
+msgstr ""
+
+#: app/templates/search.html:11
+msgid "Newer posts"
+msgstr ""
+
+#: app/templates/search.html:16
+msgid "Older posts"
+msgstr ""
+
+#: app/templates/send_message.html:5
+#, python-format
+msgid "Send Message to %(recipient)s"
+msgstr ""
+
+#: app/templates/user.html:18
+msgid "Export your posts"
+msgstr ""
+
+#: app/templates/user.html:21
+msgid "Send private message"
+msgstr ""
+
+#: app/templates/user_popup.html:7
+msgid "Last seen on"
+msgstr ""
+
+#: app/templates/user_popup.html:9
+#, python-format
+msgid "%(count)d followers"
+msgstr ""
+
+#: app/templates/user_popup.html:9
+#, python-format
+msgid "%(count)d following"
+msgstr ""
+
+#: app/templates/user_popup.html:15
+msgid "Follow"
+msgstr ""
+
+#: app/templates/user_popup.html:22
+msgid "Unfollow"
+msgstr ""
+

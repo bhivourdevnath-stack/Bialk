@@ -1,0 +1,56 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# Flask / app runtime
+instance/
+.webassets-cache/
+.env
+.env.*
+!.env.example
+!.env.*.example
+worker/.dev.vars
+frontend/.env.local
+frontend/.vercel/
+
+# Database files
+*.sqlite3
+*.db
+
+# Logs and local data
+logs/
+*.log
+
+# Test and coverage output
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Build / distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Local config overrides
+config_local.py

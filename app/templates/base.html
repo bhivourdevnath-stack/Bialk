@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if title %}
+    <title>{{ title }} - Bialk</title>
+    {% else %}
+    <title>Welcome to Bialk</title>
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous">
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">Bialk</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('main.index') }}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('main.explore') }}">Explore</a>
+            </li>
+            {% if g.search_form %}
+            <form class="navbar-form navbar-left" method="get" action="{{ url_for('main.search') }}">
+                <div class="form-group">
+                    {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                </div>
+            </form>
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            {% if current_user.is_anonymous %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('auth.login') }}">Login</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('main.messages') }}">
+                {{ _('Messages') }}
+                {% set unread_message_count = current_user.unread_message_count() %}
+                <span id="message_count" class="badge text-bg-danger{% if unread_message_count == 0 %} d-none{% endif %}">{{ unread_message_count }}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('auth.logout') }}">Logout</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-3">
+      {% if current_user.is_authenticated %}
+      {% with tasks = current_user.get_tasks_in_progress() %}
+      {% if tasks %}
+        {% for task in tasks %}
+        <div class="alert alert-success" role="alert">
+          {{ task.description }}
+          <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>%
+        </div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+        {{ moment.include_moment() }}
+        {{ moment.lang(g.locale) }}
+        <script>
+          async function translatePost(event, link) {
+            event.preventDefault();
+            const postId = link.dataset.postId;
+            link.textContent = {{ _('Translating...')|tojson }};
+            link.setAttribute('aria-busy', 'true');
+            try {
+              const response = await fetch(link.dataset.translateUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: Number(postId) })
+              });
+              const data = await response.json();
+              if (!response.ok) throw new Error(data.error || {{ _('Translation failed.')|tojson }});
+              const result = document.createElement('span');
+              result.className = 'translated-post';
+              result.textContent = data.text;
+              link.replaceWith(result);
+            } catch (error) {
+              link.textContent = error.message || {{ _('Translation failed.')|tojson }};
+              link.href = '#';
+            } finally {
+              link.removeAttribute('aria-busy');
+            }
+          }
+
+          function initialize_popovers() {
+            const popups = document.getElementsByClassName('user_popup');
+            for (let i = 0; i < popups.length; i++) {
+              const link = popups[i];
+              new bootstrap.Popover(link, {
+                content: 'Loading...',
+                trigger: 'hover focus',
+                placement: 'right',
+                html: true,
+                sanitize: false,
+                delay: {show: 500, hide: 0},
+                container: link,
+                customClass: 'd-inline',
+              });
+              link.addEventListener('show.bs.popover', async (event) => {
+                if (event.target.popupLoaded) return;
+                const response = await fetch(link.dataset.popupUrl);
+                if (!response.ok) return;
+                const content = await response.text();
+                const instance = bootstrap.Popover.getInstance(event.target);
+                if (instance && content) {
+                  event.target.popupLoaded = true;
+                  instance.setContent({'.popover-body': content});
+                }
+              });
+              link.addEventListener('shown.bs.popover', () => {
+                flask_moment_render_all();
+              });
+            }
+          }
+          document.addEventListener('DOMContentLoaded', initialize_popovers);
+
+          function set_message_count(n) {
+            const badge = document.getElementById('message_count');
+            if (!badge) return;
+            badge.textContent = n;
+            badge.classList.toggle('d-none', n === 0);
+          }
+
+          function set_task_progress(task_id, progress) {
+            const progressElement = document.getElementById(task_id + '-progress');
+            if (progressElement) progressElement.textContent = progress;
+          }
+
+          {% if current_user.is_authenticated %}
+          function initialize_notifications() {
+            let since = 0;
+            setInterval(async function() {
+              const response = await fetch('{{ url_for("main.notifications") }}?since=' + since);
+              if (!response.ok) return;
+              const updates = await response.json();
+              for (const update of updates) {
+                switch (update.name) {
+                  case 'unread_message_count':
+                    set_message_count(update.data);
+                    break;
+                  case 'task_progress':
+                    set_task_progress(update.data.task_id, update.data.progress);
+                    break;
+                }
+                since = update.timestamp;
+              }
+            }, 10000);
+          }
+          document.addEventListener('DOMContentLoaded', initialize_notifications);
+          {% endif %}
+        </script>
+  </body>
+</html>
