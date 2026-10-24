@@ -160,6 +160,5 @@ python tests.py
 
 This project follows the structure of a typical Flask microblogging application and is well-suited for learning, extending, and customizing social web features.
 
-## License
 
-This project does not currently declare a license in the repository metadata. If you plan to distribute or publish it, consider adding an appropriate open-source license.
+
